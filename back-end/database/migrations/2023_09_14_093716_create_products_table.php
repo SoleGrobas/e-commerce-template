@@ -16,11 +16,11 @@ return new class extends Migration
             $table->string('title');
             $table->string('description');
             $table->double('price', 8, 2);
-            $table->double('discount', 8, 2);
+            $table->double('discount', 8, 2)->nullable();
             $table->biginteger('stock');
-            $table->string('image');
+            $table->string('image')->nullable();
             $table->enum('size', ['XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL']);
-            $table->timestamps();
+            $table->timestamps()->nullable();
         });
     }
 

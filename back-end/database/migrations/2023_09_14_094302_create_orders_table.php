@@ -15,12 +15,12 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
-            $table->double('total_ammount', 8, 2);
+            $table->double('total_ammount', 8, 2)->nullable();
             $table->string('shipping_address');
             $table->enum('order_status', ['incomming', 'doing', 'ready','close']);
             $table->enum('payment', ['creditCard', 'cash']);
             $table->enum('delivery', ['delivery', 'pickUp']);
-            $table->text('comments');
+            $table->text('comments')->nullable();
             $table->timestamps();
         });
     }

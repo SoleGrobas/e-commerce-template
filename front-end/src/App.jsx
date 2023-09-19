@@ -1,22 +1,14 @@
 
 import './App.css';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import ShowProducts from './components/ShowProducts';
+import Router from './configuration/Router';
 
 function App() {
- 
+
 
   return (
-    <>
-      <BrowserRouter>
-        <Routes>
-          <Route path='/' element={<ShowProducts></ShowProducts>}>
-          </Route>
-        </Routes>
-      </BrowserRouter>
-     
-    </>
-  )
+       <Router />
+ 
+  );
 }
 
 export default App;

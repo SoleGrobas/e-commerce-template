@@ -40,7 +40,7 @@ const ShowProducts = () => {
                 <th>stock</th>
                 <th>image</th>
                 <th>size</th>
-                <th>Acciones</th>
+                <th></th>
             </tr>
 
         </thead>

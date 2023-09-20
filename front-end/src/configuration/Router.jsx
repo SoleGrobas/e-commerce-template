@@ -6,6 +6,9 @@ import ShowCategories from "../views/ShowCategories";
 import EditCategory from "../views/EditCategory";
 import CreateCategory from "../views/CreateCategory";
 import Navbar from "../components/Navbar";
+import CreateOrder from "../views/CreateOrder";
+import ShowOrders from "../views/ShowOrders";
+import EditOrder from "../views/EditOrder";
 
 const Router = () => {
     return (
@@ -23,6 +26,7 @@ const Router = () => {
             path="/edit/:id" element={<EditProduct></EditProduct>}
           ></Route>
           <Route
+<<<<<<< HEAD
             path="/categories" element={<ShowCategories></ShowCategories>}
           ></Route>
           <Route
@@ -30,6 +34,15 @@ const Router = () => {
           ></Route>
           <Route
             path="/category/:id" element={<EditCategory></EditCategory>}
+=======
+            path="/order" element={<CreateOrder></CreateOrder>}
+          ></Route>
+          <Route
+            path="/order/edit/:id" element={<EditOrder></EditOrder>}
+          ></Route>
+          <Route
+            path="/orders" element={<ShowOrders></ShowOrders>}
+>>>>>>> 0313444770ef99432df3aa5c9024bbafe5042f89
           ></Route>
         </Routes>
       </BrowserRouter>

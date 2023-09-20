@@ -26,7 +26,6 @@ const Router = () => {
             path="/edit/:id" element={<EditProduct></EditProduct>}
           ></Route>
           <Route
-<<<<<<< HEAD
             path="/categories" element={<ShowCategories></ShowCategories>}
           ></Route>
           <Route
@@ -34,7 +33,9 @@ const Router = () => {
           ></Route>
           <Route
             path="/category/:id" element={<EditCategory></EditCategory>}
-=======
+            
+          ></Route>
+          <Route
             path="/order" element={<CreateOrder></CreateOrder>}
           ></Route>
           <Route
@@ -42,7 +43,6 @@ const Router = () => {
           ></Route>
           <Route
             path="/orders" element={<ShowOrders></ShowOrders>}
->>>>>>> 0313444770ef99432df3aa5c9024bbafe5042f89
           ></Route>
         </Routes>
       </BrowserRouter>

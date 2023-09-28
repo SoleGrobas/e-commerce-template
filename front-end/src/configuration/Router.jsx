@@ -39,7 +39,7 @@ const Router = () => {
             path="/order" element={<CreateOrder></CreateOrder>}
           ></Route>
           <Route
-            path="/order/edit/:id" element={<EditOrder></EditOrder>}
+            path="/order/:id" element={<EditOrder></EditOrder>}
           ></Route>
           <Route
             path="/orders" element={<ShowOrders></ShowOrders>}

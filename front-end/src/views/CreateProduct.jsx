@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import './createProduct.css';
 import axios from 'axios';
 import {useNavigate} from 'react-router-dom';
@@ -14,13 +14,48 @@ const CreateProduct = () => {
     const [stock, setStock] = useState(0)
     const [image, setImage] = useState('')
     const [size, setSize] = useState('')
+    const [categories, setCategories] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState('');
     const navigate = useNavigate()
     
-    const store = async (e) => {
-        e.preventDefault()
-        await axios.post(endpoint, {title: title, description: description, price: price, discount: discount, stock: stock, image: image, size: size})
-        navigate('/')
+   // const store = async (e) => {
+    //    e.preventDefault()
+    //    await axios.post(endpoint, {title: title, description: description, price: price, discount: discount, stock: stock, image: image, size: size})
+    //    navigate('/')
+   // }
+   useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get('http://127.0.0.1:8000/api/categories');
+        setCategories(response.data);
+      } catch (error) {
+        console.error('Error al obtener las categorías', error);
+      }
+    };
+    fetchCategories();
+  }, []);
+
+  const store = async (e) => {
+    e.preventDefault();
+    const productData = {
+      title,
+      description,
+      price,
+      discount,
+      stock,
+      image,
+      size,
+      category_id: selectedCategory, 
+    };
+
+    try {
+      await axios.post(endpoint, productData);
+      navigate('/');
+    } catch (error) {
+      console.error('Error al crear el producto', error);
     }
+  };
+
   return (
     <div>
         
@@ -65,6 +100,21 @@ const CreateProduct = () => {
                         <option value="XXXL">XXXL</option>
                     </select>
                  
+                </div>
+                <div className="mb">
+                <label className="form-label">Category</label>
+                <select
+                    className="form-select form-select-sm"
+                    value={selectedCategory}
+                    onChange={(e) => setSelectedCategory(e.target.value)}
+                    >
+                    <option value="" disabled>Select a category</option>
+                    {categories.map((category) => (
+                    <option key={category.id} value={category.id}>
+                    {category.name}
+                    </option>
+                    ))}
+                </select>
                 </div>
             </div>
             <button type='submit' id="buttonStore" className='btn btn-outline-success'>Store</button>

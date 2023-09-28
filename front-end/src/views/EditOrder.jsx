@@ -3,12 +3,12 @@ import axios from 'axios';
 import {useNavigate, useParams} from 'react-router-dom';
 
 
-const endpoint = 'http://127.0.0.1:8000/api/order/edit/'
+const endpoint = 'http://127.0.0.1:8000/api/order/'
 
 const EditOrder = () => {
     
-    const [user_id, setUser_id] = useState(null)
-    const [total_ammount, setTotal_ammount] = useState(null)
+    const [user_id, setUser_id] = useState('')
+    const [total_ammount, setTotal_ammount] = useState('')
     const [shipping_address, setShipping_address] = useState('')
     const [order_status, setOrder_status] = useState('')
     const [payment, setPayment] = useState('')
@@ -84,7 +84,7 @@ const EditOrder = () => {
                 </div>
                 <div className="mb">
                     <label className="form-label">Comments</label>
-                    <input  value={comments} onChange={ (e)=> setDelivery(e.target.value)} className="form-control form-control-sm" id="formFileSm" type="text"/>
+                    <input  value={comments} onChange={ (e)=> setComments(e.target.value)} className="form-control form-control-sm" id="formFileSm" type="text"/>
                 </div>
                 
                 

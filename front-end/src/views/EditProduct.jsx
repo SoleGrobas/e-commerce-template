@@ -13,14 +13,30 @@ const EditProduct = () => {
     const [stock, setStock] = useState(0)
     const [image, setImage] = useState('')
     const [size, setSize] = useState('')
+    const [categories, setCategories] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState('');
     const navigate = useNavigate()
     const {id} = useParams()
 
     const update = async (e) =>{
         e.preventDefault()
-        await axios.put(`${endpoint}${id}`, {title: title, description: description, price: price, discount: discount, stock: stock, image: image, size: size})
+        await axios.put(`${endpoint}${id}`, {title: title, description: description, price: price, discount: discount, stock: stock, image: image, size: size, category_id: selectedCategory})
         navigate('/')
     }
+
+   useEffect(() => {
+    const getCategories = async () => {
+      try {
+        const response = await axios.get('http://127.0.0.1:8000/api/categories'); // Reemplaza con la URL correcta de tus categorías
+        setCategories(response.data);
+      } catch (error) {
+        console.error('Error al obtener las categorías:', error);
+      }
+    };
+
+    getCategories();
+  }, []);
+
 
     useEffect( () =>{
         const getProductById = async () => {
@@ -32,6 +48,7 @@ const EditProduct = () => {
         setStock(response.data.stock)
         setImage(response.data.image)
         setSize(response.data.size)
+        
         }
         getProductById()
     }, [])
@@ -80,6 +97,21 @@ const EditProduct = () => {
                         <option value="XXXL">XXXL</option>
                     </select>
                  
+                </div>
+                <div className="mb">
+                    <label className="form-label">Category</label>
+                    <select
+                        className="form-select"
+                        value={selectedCategory}
+                        onChange={(e) => setSelectedCategory(e.target.value)}
+  >
+                        <option value="">Select a category</option>
+                        {categories.map((category) => (
+                        <option key={category.id} value={category.id}>
+                        {category.name}
+                        </option>
+                        ))}
+                    </select>
                 </div>
             </div>
             <button type='submit' id="buttonStore" className='btn btn-outline-success'>Update</button>

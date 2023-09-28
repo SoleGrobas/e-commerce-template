@@ -13,14 +13,22 @@ const ShowOrders = () => {
     }, [])
 
     const getAllOrders = async() =>{
-        const response = await axios.get(`${endpoint}/orders`)
-     SetOrders(response.data)
-        console.log(response.data)
+        try{
+          const response = await axios.get(`${endpoint}/orders`)
+          SetOrders(response.data)
+          console.log(response.data)
+        } catch (error){
+          console.error('Error fetching orders:', error);
+        }
     }
 
     const deleteOrder = async (id) => {
-        await axios.delete(`${endpoint}/order/${id}`)
-        getAllOrders()
+        try{
+          await axios.delete(`${endpoint}/order/${id}`)
+          getAllOrders()
+        } catch {
+          console.error('Error deleting order:', error); 
+        }  
 
     }
   return (
@@ -34,7 +42,10 @@ const ShowOrders = () => {
             <tr>
                 <th>id</th>
                 <th>User_id</th>
+                <th>User Name</th>
                 <th>Total Ammount</th>
+                <th>Quantity</th>
+                <th>Products</th>
                 <th>Shipping Address</th>
                 <th>Status</th>
                 <th>Payment</th>
@@ -49,14 +60,35 @@ const ShowOrders = () => {
             <tr key={order.id}>
                 <td>{order.id}</td>
                 <td>{order.user_id}</td>
+                <td>{order.user ? order.user.name : 'N/A'}</td>
                 <td>{order.total_ammount}</td>
+                <td>{order.order_details.length > 0 ? (
+    <ul>
+      {order.order_details.map((orderDetail) => (
+        <li key={orderDetail.id}>{orderDetail.quantity}</li>
+      ))}
+    </ul>
+  ) : (
+    'N/A'
+  )}</td>
+                <td>
+                    {order.product && order.product.length > 0 ? (
+                    <ul>
+                      {order.product.map((product) => (
+                        <li key={product.id}>{product.title}</li>
+                        ))}
+                    </ul>
+                  ) : (
+                    'N/A'
+                )}
+                </td>
                 <td>{order.shipping_address}</td>
                 <td>{order.order_status}</td>
                 <td>{order.payment}</td>
                 <td>{order.delivery}</td>
                 <td>{order.comments}</td>
                 <td>
-                    <Link to={`/order/edit/${order.id}`} className='btn btn-outline-secondary btn-sm'>Edit</Link>
+                    <Link to={`/order/${order.id}`} className='btn btn-outline-secondary btn-sm'>Edit</Link>
                     <button onClick={ ()=>deleteOrder(order.id)} className='btn btn-outline-danger btn-sm'>Delete</button>
                 </td>
             </tr>

@@ -12,8 +12,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-       // $products = Product::all();
-        //return $products;
+      
         $products = Product::with('categories')->get();
         return $products;
 

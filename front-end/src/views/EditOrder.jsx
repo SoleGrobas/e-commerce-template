@@ -18,9 +18,16 @@ const EditOrder = () => {
     const {id} = useParams()
 
     const update = async (e) =>{
-        e.preventDefault()
-        await axios.put(`${endpoint}${id}`, {user_id: user_id, total_ammount: total_ammount, shipping_address: shipping_address, order_status: order_status, payment: payment, delivery: delivery, comments: comments})
-        navigate('/orders')
+        e.preventDefault();
+        try{
+            await axios.put(`${endpoint}${id}`, {user_id: user_id, total_ammount: total_ammount, shipping_address: shipping_address, order_status: order_status, payment: payment, delivery: delivery, comments: comments})
+        navigate('/orders');
+
+        }
+        catch (error){
+            console.error('Error al actualizar la orden:', error);
+        }
+        
     }
 
     useEffect( () =>{
@@ -57,8 +64,8 @@ const EditOrder = () => {
                     <input value={shipping_address} onChange={ (e)=> setShipping_address(e.target.value)} type='text' className="form-control"/>
                 </div>
                 <div className="mb">
-                    <select className="form-select form-select-sm" value={order_status} onChange={ (e)=> setComments(e.target.value)}>
-                        <option selected>Status</option>
+                    <select className="form-select form-select-sm" value={order_status} onChange={ (e)=> setOrder_status(e.target.value)}>
+                        <option value="">Status</option>
                         <option value="incomming">incomming</option>
                         <option value="doing">doing</option>
                         <option value="ready">ready</option>
@@ -67,16 +74,16 @@ const EditOrder = () => {
                  
                 </div>
                 <div className="mb">
-                    <select className="form-select form-select-sm" value={payment} onChange={ (e)=> setComments(e.target.value)}>
-                        <option selected>Payment</option>
+                    <select className="form-select form-select-sm" value={payment} onChange={ (e)=> setPayment(e.target.value)}>
+                        <option value="">Payment</option>
                         <option value="creditCard">CreditCard</option>
                         <option value="cash">Cash</option>
                     </select>
                  
                 </div>
                 <div className="mb">
-                    <select className="form-select form-select-sm" value={delivery} onChange={ (e)=> setComments(e.target.value)}>
-                        <option selected>Delivery</option>
+                    <select className="form-select form-select-sm" value={delivery} onChange={ (e)=> setDelivery(e.target.value)}>
+                        <option value="">Delivery</option>
                         <option value="delivery">Delivery</option>
                         <option value="pickUp">PickUp</option>
                     </select>

@@ -40,6 +40,7 @@ const ShowProducts = () => {
                 <th>stock</th>
                 <th>image</th>
                 <th>size</th>
+                <th>category</th>
                 <th></th>
             </tr>
 
@@ -55,6 +56,7 @@ const ShowProducts = () => {
                 <td>{product.stock}</td>
                 <td>{product.image}</td>
                 <td>{product.size}</td>
+                <td>{product.categories && product.categories.map((category)=> (<p key={category.id}>{category.name}</p>))}</td>
                 <td>
                     <Link to={`/edit/${product.id}`} className='btn btn-outline-secondary btn-sm'>Edit</Link>
                     <button onClick={ ()=>deleteProduct(product.id)} className='btn btn-outline-danger btn-sm'>Delete</button>

@@ -12,8 +12,10 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::all();
+      
+        $products = Product::with('categories')->get();
         return $products;
+
     }
 
    
@@ -51,10 +53,10 @@ class ProductController extends Controller
     public function update(Request $request, $id)
 {
     try {
-        // Primero, intentamos encontrar el producto en la base de datos
+        
         $product = Product::findOrFail($id);
 
-        // Luego, actualizamos los campos del producto con los valores de la solicitud
+        
         $product->title = $request->input('title');
         $product->description = $request->input('description');
         $product->price = $request->input('price');
@@ -62,14 +64,14 @@ class ProductController extends Controller
         $product->stock = $request->input('stock');
         $product->image = $request->input('image');
         $product->size = $request->input('size');
-
-        // Guardamos los cambios en la base de datos
+        $product->categories()->sync([$request->input('category_id')]);
+        
         $product->save();
 
-        // Devolvemos el producto actualizado como respuesta
+        
         return $product;
     } catch (\Exception $e) {
-        // Maneja cualquier excepción que pueda ocurrir, por ejemplo, si el producto no se encuentra
+        
         return response()->json(['error' => 'No se pudo actualizar el producto'], 500);
     }
 }

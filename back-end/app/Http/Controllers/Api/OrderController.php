@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 use App\Models\Order;
+use App\Models\User;
+use App\Models\Product;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -12,7 +14,7 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $orders = Order::all();
+        $orders = Order::with('user', 'product', 'order_details')->get();
         return $orders;
     }
 
@@ -31,6 +33,10 @@ class OrderController extends Controller
         $order->comments = $request->comments;
 
         $order->save();
+
+        $order->products()->attach($request->input('product_ids'), ['quantity' => $request->input('quantities')]);
+        return response()->json(['message' => 'Order created successfully'], 201);
+
     }
 
     /**
@@ -38,7 +44,7 @@ class OrderController extends Controller
      */
     public function show($id)
     {
-        $order = Order::find($id);
+        $order = Order::with('user', 'products')->find($id);
         return $order;
     }
 
@@ -72,7 +78,25 @@ class OrderController extends Controller
      */
     public function destroy($id)
     {
-        $order = Order::destroy($id);
-        return $order;
+        try {
+            DB::beginTransaction();
+
+          
+            $order = Order::findOrFail($id);
+
+            
+            $order->order_details()->delete();
+
+            
+            $order->delete();
+
+            DB::commit();
+
+            return response()->json(['message' => 'Order deleted successfully'], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['error' => 'Failed to delete order'], 500);
+        }
     }
+
 }

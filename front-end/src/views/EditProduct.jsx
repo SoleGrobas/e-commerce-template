@@ -19,15 +19,20 @@ const EditProduct = () => {
     const {id} = useParams()
 
     const update = async (e) =>{
-        e.preventDefault()
-        await axios.put(`${endpoint}${id}`, {title: title, description: description, price: price, discount: discount, stock: stock, image: image, size: size, category_id: selectedCategory})
+        e.preventDefault();
+        try {
+            await axios.put(`${endpoint}${id}`, {title: title, description: description, price: price, discount: discount, stock: stock, image: image, size: size, category_id: selectedCategory})
         navigate('/')
+        } catch (error){
+            console.error('Error updating product:', error); 
+        }
+        
     }
 
    useEffect(() => {
     const getCategories = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/api/categories'); // Reemplaza con la URL correcta de tus categorías
+        const response = await axios.get('http://127.0.0.1:8000/api/categories'); 
         setCategories(response.data);
       } catch (error) {
         console.error('Error al obtener las categorías:', error);
@@ -40,14 +45,20 @@ const EditProduct = () => {
 
     useEffect( () =>{
         const getProductById = async () => {
-        const response = await axios.get(`${endpoint}${id}`)
-        setTitle(response.data.title)
-        setDescription(response.data.description)
-        setPrice(response.data.price)
-        setDiscount(response.data.discount)
-        setStock(response.data.stock)
-        setImage(response.data.image)
-        setSize(response.data.size)
+            try{
+                const response = await axios.get(`${endpoint}${id}`);
+                if (response.data) {
+                    setTitle(response.data.title)
+                    setDescription(response.data.description)
+                    setPrice(response.data.price)
+                    setDiscount(response.data.discount)
+                    setStock(response.data.stock)
+                    setImage(response.data.image)
+                    setSize(response.data.size)
+                }
+            } catch (error) {
+                console.error('Error getting product by ID:', error);
+            }
         
         }
         getProductById()
@@ -86,7 +97,7 @@ const EditProduct = () => {
                 
                 <div className="mb">
                     <select className="form-select form-select-sm" value={size} onChange={ (e)=> setSize(e.target.value)}>
-                        <option selected>Size</option>
+                        <option value="" defaultValue>Size</option>
                         <option value="XXS">XXS</option>
                         <option value="XS">XS</option>
                         <option value="S">S</option>
